@@ -1,0 +1,124 @@
+@import url("./variables.css");
+@import url("./reset.css");
+
+.the-naughty-list {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 60px);
+  margin: 0 auto;
+  gap: 20px;
+  text-decoration: underline;
+  color: var(--orange);
+}
+
+.lily,
+.scarlet,
+.ollie,
+.louis {
+  border: solid 2px var(--orange);
+  width: 300px;
+  height: 300px;
+  max-width: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto;
+}
+
+.reasons {
+  color: var(--orange);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3rem;
+  width: calc(100% - 40px);
+  margin: 20px auto;
+}
+
+ol {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--orange);
+  list-style-type: decimal;
+  font-size: 1rem;
+  background-color: var(--dark-red);
+  padding: 20px 25px;
+  margin: 30px auto;
+  border-radius: 12px;
+  width: 90%;
+  line-height: 1.6;
+}
+
+.delete-btn {
+  margin-left: 0.3rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.6rem;
+  color: var(--dark-red);
+}
+
+.delete-btn:hover {
+  color: var(--dark-red);
+}
+
+#naughty-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background-color: var(--dark-red);
+  padding: 20px;
+  margin: 20px auto;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+#naughty-form input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid var(--orange);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #fffaf5;
+  color: #333;
+  outline: none;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+#naughty-form input[type="text"]:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 6px var(--orange);
+}
+
+#naughty-form button {
+  background-color: var(--orange);
+  color: var(--dark-red);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-family: "Josefin Sans", sans-serif;
+  transition: background-color 0.2s ease, transform 0.1s ease-in-out;
+}
+
+#naughty-form button:hover {
+  background-color: var(--red);
+  color: white;
+  transform: scale(1.05);
+}
+
+.person {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.person-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--orange);
+  margin-bottom: 5px;
+}

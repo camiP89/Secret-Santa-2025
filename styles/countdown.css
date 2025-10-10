@@ -1,0 +1,15 @@
+@import url(".styles/variables.css");
+@import url("styles/reset.css");
+
+#countdown {
+  background-color: var(--dark-red);
+  color: var(--orange);
+  width: calc(100% - 80px);
+  margin: 40px auto;
+  padding: 30px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 1.5rem;
+  border: solid 2px var(--orange);
+}
