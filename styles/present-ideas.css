@@ -108,6 +108,18 @@ main {
   align-items: center;
 }
 
+.person-card h2 {
+  color: var(--orange);
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  text-shadow: 0 0 5px var(--orange), 0 0 10px var(--red);
+  margin: 0 auto 10px auto;
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+
 .ideas-list {
   list-style-type: disc;
   padding-left: 20px;

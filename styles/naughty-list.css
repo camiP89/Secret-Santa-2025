@@ -38,7 +38,7 @@
   font-weight: bold;
   color: var(--white);
   text-transform: uppercase;
-  margin: 10px 0 0 0;
+  margin: 10px auto;
   font-family: "Nixie One", cursive;
 }
 
