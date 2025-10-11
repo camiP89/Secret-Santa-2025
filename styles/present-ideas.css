@@ -95,3 +95,11 @@ main {
   cursor: pointer;
   margin-left: 5px;
 }
+
+@media (max-width: 600px) {
+  #idea-form select {
+    min-height: 44px; /* minimum touch-friendly height */
+    padding: 8px 10px; /* ensures text isn’t cramped */
+  }
+}
+
