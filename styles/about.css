@@ -3,7 +3,7 @@
 
 .about-container {
   width: calc(100% - 40px);
-  margin: 60px auto;
+  margin: 20px auto;
   padding: 20px;
   background: var(--dark-red);
   border-radius: 16px;

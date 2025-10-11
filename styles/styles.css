@@ -6,16 +6,11 @@ body {
 }
 
 h1 {
-  font-family: "Oregano", Verdana, Geneva, Tahoma, sans-serif;
-  color: var(--orange);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  font-weight: 300;
-  width: calc(100% - 40px);
-  margin: 20px auto;
   text-align: center;
+  color: var(--orange);
+  text-shadow: 0 0 10px var(--orange), 0 0 20px var(--red);
+  font-family: "Nixie One", cursive;
+  margin-top: 40px;
 }
 
 .mobile-header {
@@ -63,6 +58,8 @@ nav a {
   font-weight: 600;
   padding: 10px 20px;
   text-decoration: none;
+  font-family: "Nixie One", cursive;
+  font-size: 1.2rem
 }
 
 nav a:hover,

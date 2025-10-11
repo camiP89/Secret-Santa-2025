@@ -3,122 +3,166 @@
 
 .the-naughty-list {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
   width: calc(100% - 60px);
-  margin: 0 auto;
-  gap: 20px;
-  text-decoration: underline;
+  margin: 20px auto;
   color: var(--orange);
+}
+
+.person {
+  background-color: var(--dark-red);
+  padding: 15px;
+  border: 2px solid var(--orange);
+  border-radius: 15px;
+  text-align: center;
+  width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.person:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(255, 165, 0, 0.6);
 }
 
 .lily,
 .scarlet,
 .ollie,
 .louis {
-  border: solid 2px var(--orange);
-  width: 300px;
+  width: 100%;
   height: 300px;
-  max-width: 100%;
   object-fit: cover;
-  display: block;
-  margin: 0 auto;
+  border-radius: 12px;
+  border: 2px solid var(--orange);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lily:hover,
+.scarlet:hover,
+.ollie:hover,
+.louis:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(255, 165, 0, 0.5);
+}
+
+.person-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--white);
+  text-transform: uppercase;
+  margin: 10px 0 0 0;
+  font-family: "Nixie One", cursive;
 }
 
 .reasons {
   color: var(--orange);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.3rem;
-  width: calc(100% - 40px);
-  margin: 20px auto;
+  text-align: center;
+  font-size: 1.1rem;
+  margin: 25px auto;
 }
 
 ol {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   color: var(--orange);
   list-style-type: decimal;
   font-size: 1rem;
   background-color: var(--dark-red);
-  padding: 20px 25px;
+  padding: 25px;
   margin: 30px auto;
-  border-radius: 12px;
+  border-radius: 15px;
   width: 90%;
+  max-width: 500px;
   line-height: 1.6;
+  box-shadow: 0 0 10px rgba(255, 165, 0, 0.3);
+  border: 2px solid var(--orange);
+}
+
+ol li {
+  background-color: var(--dark-red);
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 1px solid var(--orange);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+ol li:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 12px rgba(255, 165, 0, 0.5);
 }
 
 .delete-btn {
-  margin-left: 0.3rem;
+  margin-left: 0.5rem;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 0.6rem;
-  color: var(--dark-red);
+  font-size: 0.7rem;
+  color: var(--red);
+  transition: color 0.2s ease;
 }
 
 .delete-btn:hover {
-  color: var(--dark-red);
+  color: var(--orange);
 }
 
 #naughty-form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   background-color: var(--dark-red);
-  padding: 20px;
-  margin: 20px auto;
-  border-radius: 12px;
+  padding: 25px;
+  margin: 30px auto;
+  border-radius: 15px;
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 15px rgba(255, 165, 0, 0.4);
+  border: 2px solid var(--orange);
+  transition: box-shadow 0.3s ease;
+}
+
+#naughty-form:hover {
+  box-shadow: 0 0 25px rgba(255, 165, 0, 0.6);
 }
 
 #naughty-form input[type="text"] {
   width: 100%;
-  padding: 10px 12px;
+  padding: 12px 15px;
+  border-radius: 12px;
   border: 2px solid var(--orange);
-  border-radius: 8px;
   font-size: 1rem;
   background-color: #fffaf5;
   color: #333;
   outline: none;
   font-family: "Josefin Sans", sans-serif;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
 #naughty-form input[type="text"]:focus {
   border-color: var(--red);
-  box-shadow: 0 0 6px var(--orange);
+  box-shadow: 0 0 12px var(--orange);
 }
 
 #naughty-form button {
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
   background-color: var(--orange);
   color: var(--dark-red);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 16px;
   font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-  font-family: "Josefin Sans", sans-serif;
-  transition: background-color 0.2s ease, transform 0.1s ease-in-out;
+  box-shadow: 0 0 10px var(--orange);
+  transition: transform 0.2s ease, box-shadow 0.3s ease,
+    background-color 0.3s ease;
 }
 
-#naughty-form button:hover {
+#naughty-form button:hover,
+#naughty-form button:active {
   background-color: var(--red);
   color: white;
   transform: scale(1.05);
-}
-
-.person {
-  text-align: center;
-  margin-bottom: 0;
-}
-
-.person-name {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--orange);
-  margin-bottom: 5px;
+  box-shadow: 0 0 20px var(--orange), 0 0 35px rgba(255, 165, 0, 0.5);
 }

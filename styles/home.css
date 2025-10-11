@@ -11,15 +11,26 @@
 .find-out-who {
   display: flex;
   justify-content: center;
-  color: var(--orange);
+  align-items: center;
+  color: var(--white);
   margin: 40px auto;
   background-color: var(--dark-red);
   text-decoration: none;
-  padding: 5px 10px;
-  width: 160px;
+  padding: 10px 20px;
+  width: 180px;
   border-radius: 5px;
-  font-weight: bold;
+  font-weight: 500;
   text-transform: uppercase;
-  font-size: 1.1rem;
+  font-size: 1rem;
   border: solid 2px var(--orange);
+
+  box-shadow: 0 0 10px var(--orange), 0 0 20px var(--orange);
+  text-shadow: 0 0 5px var(--orange), 0 0 10px var(--orange);
+
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.find-out-who:hover {
+  box-shadow: 0 0 20px var(--orange), 0 0 40px var(--orange);
+  transform: scale(1.05);
 }

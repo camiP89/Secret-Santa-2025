@@ -1,0 +1,91 @@
+body {
+  background-color: var(--dark-red);
+  font-family: 'Josefin Sans', sans-serif;
+  color: var(--orange);
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#idea-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 90%;
+  max-width: 500px;
+  background-color: var(--black);
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px auto;
+  box-shadow: 0 0 15px rgba(255,165,0,0.5);
+}
+
+#idea-form select,
+#idea-form input[type="text"] {
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid var(--orange);
+}
+
+#idea-form button {
+  background-color: var(--orange);
+  color: var(--black);
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#idea-form button:hover {
+  background-color: var(--red);
+  color: white;
+}
+
+.present-ideas-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 90%;
+  max-width: 1200px;
+}
+
+.person-card {
+  background-color: var(--black);
+  border: 2px solid var(--orange);
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ideas-list {
+  list-style-type: disc;
+  padding-left: 20px;
+  width: 100%;
+}
+
+.ideas-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+  background-color: var(--dark-red);
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+.delete-btn,
+.edit-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 5px;
+}
