@@ -1,5 +1,5 @@
-@import url(".styles/variables.css");
-@import url("styles/reset.css");
+@import url("./variables.css");
+@import url("./reset.css");
 
 #countdown {
   display: flex;
