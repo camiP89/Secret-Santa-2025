@@ -33,8 +33,10 @@ main {
 #idea-form input[type="text"] {
   padding: 10px;
   border-radius: 8px;
-  height: 40px;
+  min-height: 45px;
   border: 2px solid var(--orange);
+  font-size: 1rem;
+  box-sizing: border-box;
 }
 
 #idea-form button {
