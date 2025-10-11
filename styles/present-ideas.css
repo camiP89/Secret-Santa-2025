@@ -33,6 +33,7 @@ main {
 #idea-form input[type="text"] {
   padding: 10px;
   border-radius: 8px;
+  height: 40px;
   border: 2px solid var(--orange);
 }
 

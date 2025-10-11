@@ -21,11 +21,6 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.person:hover {
-  transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 5px 15px rgba(255, 165, 0, 0.6);
-}
-
 .lily,
 .scarlet,
 .ollie,
@@ -36,14 +31,6 @@
   border-radius: 12px;
   border: 2px solid var(--orange);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.lily:hover,
-.scarlet:hover,
-.ollie:hover,
-.louis:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(255, 165, 0, 0.5);
 }
 
 .person-name {
