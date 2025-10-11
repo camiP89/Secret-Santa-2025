@@ -11,6 +11,7 @@ h1 {
   text-shadow: 0 0 10px var(--orange), 0 0 20px var(--red);
   font-family: "Nixie One", cursive;
   margin-top: 40px;
+  width: calc(100% - 40px);
 }
 
 .mobile-header {
