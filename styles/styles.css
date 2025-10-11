@@ -10,8 +10,12 @@ h1 {
   color: var(--orange);
   display: flex;
   justify-content: center;
+  align-items: center;
   font-size: 2rem;
   font-weight: 300;
+  width: calc(100% - 40px);
+  margin: 20px auto;
+  text-align: center;
 }
 
 .mobile-header {

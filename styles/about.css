@@ -1,0 +1,32 @@
+@import url("./variables.css");
+@import url("./reset.css");
+
+.about-container {
+  width: calc(100% - 40px);
+  margin: 60px auto;
+  padding: 20px;
+  background: var(--dark-red);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.about-text h2 {
+  color: var(--white);
+  margin-top: 1.5em;
+}
+
+.about-text ol {
+  margin-left: 1.5em;
+  color: var(--orange);
+}
+
+.disclaimer {
+  margin-top: 2em;
+  font-weight: bold;
+  text-align: center;
+  color: var(--white);
+}
+
+p {
+  color: var(--orange);
+}
