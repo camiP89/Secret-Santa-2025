@@ -1,36 +1,39 @@
-// src/secretSanta.js (or main.js)
+// src/secretSanta.js
+// --------------------------
+// Secret Santa Game Script
+// --------------------------
 
-// Import the initialized Firebase app, analytics, and database from your firebase.js file
+// Import Firebase setup
 import { app, analytics, database } from "../src/firebase.js";
+import { ref, onValue, set, update } from "firebase/database";
 
-// Import specific functions needed from the Realtime Database SDK
-// We now need 'update' to modify individual properties within a Firebase object
-import { ref, onValue, set, update } from "firebase/database"; // <-- 'update' is added here
-
-// Get references to the specific locations in your Realtime Database
+// Firebase references
 const assignmentsRef = ref(database, "secretSanta/assignments");
-// This reference will now store an object like { "Andy": true, "Liz": false, ... }
-const revealedPlayersRef = ref(database, "secretSanta/revealedPlayers"); // <-- CHANGED REF NAME
+const revealedPlayersRef = ref(database, "secretSanta/revealedPlayers");
 
+// Player list
 const players = ["Andy", "Liz", "George", "Harriet", "Charlie", "Camilla"];
 
-// Function to generate Secret Santa assignments
+// Utility: Generate Secret Santa assignments (no one gets themselves)
 function generateAssignments(names) {
   let recipients;
   do {
     recipients = [...names].sort(() => Math.random() - 0.5);
-  } while (names.some((n, i) => n === recipients[i])); // Ensure no one gets themselves
+  } while (names.some((n, i) => n === recipients[i]));
   return Object.fromEntries(names.map((n, i) => [n, recipients[i]]));
 }
 
+// -------------------------------------------
+// DOM Ready
+// -------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Secret Santa game script loaded and DOM parsed.");
+  console.log("Secret Santa script loaded.");
 
   const revealBox = document.getElementById("reveal");
   const buttons = document.querySelectorAll("button[data-player]");
   const resetGameBtn = document.getElementById("reset-game-btn");
 
-  // Add event listener for the reset button
+  // 🔁 RESET BUTTON LOGIC
   if (resetGameBtn) {
     resetGameBtn.addEventListener("click", async () => {
       if (
@@ -38,52 +41,47 @@ document.addEventListener("DOMContentLoaded", () => {
           "Are you sure you want to reset the Secret Santa game? This will clear all assignments and revealed states for everyone!"
         )
       ) {
-        console.log("Resetting Secret Santa game data in Firebase...");
         try {
-          // Setting paths to null effectively deletes the data
           await set(assignmentsRef, null);
-          await set(revealedPlayersRef, null); // <-- Reset this new ref
-          console.log("Secret Santa game data successfully reset!");
+          await set(revealedPlayersRef, null);
           alert("Game has been reset!");
+          console.log("Game data reset in Firebase.");
         } catch (error) {
-          console.error("Error resetting Secret Santa game data:", error);
+          console.error("Error resetting game:", error);
           alert("Failed to reset game: " + error.message);
         }
       }
     });
   }
 
-  // --- Main Game Logic Listener ---
-  // This listener observes changes to the generated assignments
+  // -------------------------------------------
+  // Listen for assignments in Firebase
+  // -------------------------------------------
   onValue(assignmentsRef, (assignmentsSnapshot) => {
     let assignments = assignmentsSnapshot.val();
 
-    // If assignments don't exist in Firebase yet, generate and save them
+    // Generate new assignments if none exist
     if (!assignments) {
-      console.log("No assignments found. Generating new ones...");
+      console.log("No assignments found — generating new ones...");
       assignments = generateAssignments(players);
       set(assignmentsRef, assignments)
-        .then(() => console.log("Assignments generated and saved."))
-        .catch((error) =>
-          console.error("Error saving new assignments:", error)
-        );
+        .then(() => console.log("Assignments saved to Firebase."))
+        .catch((error) => console.error("Error saving assignments:", error));
     } else {
       console.log("Assignments loaded from Firebase.");
     }
 
-    // --- NEW: Listener for Individual Player Revealed States ---
-    // This listener observes changes to which players have revealed their assignments
-    onValue(revealedPlayersRef, (revealedPlayersSnapshot) => {
-      // revealedStates will be an object like { "Andy": true, "Liz": false }
-      const revealedStates = revealedPlayersSnapshot.val() || {};
-
-      // Calculate how many players have revealed
+    // -------------------------------------------
+    // Listen for revealed players in Firebase
+    // -------------------------------------------
+    onValue(revealedPlayersRef, (revealedSnapshot) => {
+      const revealedStates = revealedSnapshot.val() || {};
       const totalRevealed = Object.keys(revealedStates).filter(
         (name) => revealedStates[name]
       ).length;
-      const allPlayersRevealed = totalRevealed === players.length; // Check if everyone has revealed
+      const allPlayersRevealed = totalRevealed === players.length;
 
-      // Reset buttons to their default visual state before applying current states
+      // Reset buttons visually
       buttons.forEach((btn) => {
         const playerName = btn.dataset.player;
         btn.textContent = `Reveal for ${playerName}`;
@@ -91,67 +89,71 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.style.backgroundColor = "";
         btn.style.color = "";
       });
-      revealBox.textContent = ""; // Clear the main reveal box initially
+      revealBox.textContent = "";
 
-      // --- Apply current game state based on Firebase data ---
+      // Update button states based on revealed data
       buttons.forEach((btn) => {
-        const playerName = btn.dataset.player; // The name associated with this button
+        const playerName = btn.dataset.player;
 
         if (revealedStates[playerName]) {
-          // If this player has already revealed (their status is 'true' in Firebase)
+          // 🔒 Player has revealed
           btn.textContent = `Revealed: ${playerName}`;
-          btn.disabled = true; // Disable their own button after revealing
+          btn.disabled = true;
           btn.style.backgroundColor = "var(--orange)";
           btn.style.color = "var(--dark-red)";
         } else if (allPlayersRevealed) {
-          // If all players have revealed, and this button's player hasn't yet, lock it
+          // 🔒 Game over: everyone has revealed
           btn.textContent = "Game Over 🔒";
           btn.disabled = true;
         }
       });
 
-      // --- Logic for when ALL players have revealed ---
+      // 🎄 All players revealed — show message
       if (allPlayersRevealed) {
-        console.log("All players have revealed! Game Over.");
         revealBox.textContent = "Everyone has revealed! Merry Christmas! 🎄";
-        // All buttons will already be locked by the loop above, if not revealed.
-      } else {
-        // --- Attach Click Listeners for unrevealed players ---
-        // We only add listeners to buttons for players who haven't revealed yet
-        buttons.forEach((btn) => {
-          const playerName = btn.dataset.player;
-          if (!revealedStates[playerName]) {
-            // If player hasn't revealed yet
-            btn.onclick = null; // Remove any old click handlers first
-            btn.addEventListener(
-              "click",
-              () => {
-                console.log(
-                  `${playerName} is attempting to reveal their assignment.`
-                );
-
-                // Show their assignment in the reveal box
-                const target = assignments[playerName];
-                revealBox.textContent = `${playerName}, you are Secret Santa for ${target}! 🎁`;
-
-                // Mark this specific player as revealed in Firebase using 'update'
-                // This is crucial: 'update' modifies only the specific property,
-                // without overwriting other players' revealed statuses.
-                update(revealedPlayersRef, { [playerName]: true })
-                  .then(() =>
-                    console.log(
-                      `${playerName} revealed state updated in Firebase.`
-                    )
-                  )
-                  .catch((error) =>
-                    console.error("Error updating revealed state:", error)
-                  );
-              },
-              { once: true }
-            ); // Use { once: true } to ensure the event fires only once per click
-          }
-        });
+        console.log("All players revealed! Game over.");
+        return; // No more listeners needed
       }
-    }); // End of onValue(revealedPlayersRef) listener
-  }); // End of onValue(assignmentsRef) listener
-}); // End of DOMContentLoaded
+
+      // -------------------------------------------
+      // Attach click listeners for unrevealed players
+      // -------------------------------------------
+      buttons.forEach((btn) => {
+        const playerName = btn.dataset.player;
+
+        if (!revealedStates[playerName]) {
+          btn.onclick = null; // Clear old handlers
+
+          btn.addEventListener(
+            "click",
+            () => {
+              console.log(`${playerName} clicked to reveal.`);
+
+              // 🎁 Show assignment
+              const target = assignments[playerName];
+              revealBox.textContent = `${playerName}, you are Secret Santa for ${target}! 🎁`;
+
+              // 🔒 Immediately lock ALL OTHER buttons locally
+              buttons.forEach((b) => {
+                if (b.dataset.player !== playerName) {
+                  b.disabled = true;
+                  b.textContent = `${b.dataset.player} 🔒`;
+                }
+              });
+
+              // 🔄 Update Firebase (so everyone else sees it)
+              update(revealedPlayersRef, { [playerName]: true })
+                .then(() =>
+                  console.log(`${playerName} marked as revealed in Firebase.`)
+                )
+                .catch((error) =>
+                  console.error("Error updating revealed state:", error)
+                );
+            },
+            { once: true }
+          );
+        }
+      });
+    }); // end revealedPlayers listener
+  }); // end assignments listener
+}); // end DOMContentLoaded
