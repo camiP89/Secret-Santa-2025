@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Present Ideas</title>
+    <!-- IMPORTANT: Add this Import Map -->
+    <script type="importmap">
+      {
+        "imports": {
+          "firebase/app": "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js",
+          "firebase/analytics": "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js",
+          "firebase/database": "https://www.gstatic.com/firebasejs/10.9.0/firebase-database.js"
+        }
+      }
+    </script>
     <script
       src="https://kit.fontawesome.com/bfed71705b.js"
       crossorigin="anonymous"
@@ -60,14 +70,9 @@
         <div class="select-wrapper">
           <select id="person-select" required>
             <option value="">Select a person</option>
-            <option value="Andy">Andy</option>
-            <option value="Liz">Liz</option>
-            <option value="George">George</option>
-            <option value="Harriet">Harriet</option>
-            <option value="Charlie">Charlie</option>
-            <option value="Camilla">Camilla</option>
           </select>
         </div>
+
         <input
           type="text"
           id="idea-input"
