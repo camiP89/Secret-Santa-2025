@@ -53,22 +53,34 @@ function renderButtonStates(buttons, revealedStates, allPlayersRevealed) {
 }
 
 // Function to render revealBox content based on Firebase data and local storage
-function renderRevealBox(revealBox, allPlayersRevealed) {
+function renderRevealBox(revealBox, revealedStates, allPlayersRevealed) {
   const localRevealedPlayer = localStorage.getItem("secretSantaRevealedPlayer");
   const localAssignment = localStorage.getItem("secretSantaAssignment");
 
-  if (allPlayersRevealed) {
+  // Check if the current user has revealed according to their local storage
+  // AND if their revealed state is still true in Firebase (to prevent stale local data)
+  const userHasRevealedLocallyAndFirebaseConfirms =
+    localRevealedPlayer &&
+    localAssignment &&
+    revealedStates[localRevealedPlayer]; // Check Firebase for confirmation
+
+  if (userHasRevealedLocallyAndFirebaseConfirms) {
+    // Prioritize showing the personal assignment if the user has revealed
+    revealBox.textContent = `${localRevealedPlayer}, you are Secret Santa for ${localAssignment}! 🎁`;
+  } else if (allPlayersRevealed) {
+    // If everyone has revealed, AND the current user hasn't revealed themselves (or their local data is stale),
+    // THEN display the global "Everyone has revealed!" message.
     revealBox.textContent = "Everyone has revealed! Merry Christmas! 🎄";
     console.log("All players revealed! Game over.");
-    // Clear local storage as the game has globally ended
+    // At this point, if there's any stale local reveal data for a user who hasn't actually revealed, clear it.
     localStorage.removeItem("secretSantaRevealedPlayer");
     localStorage.removeItem("secretSantaAssignment");
-  } else if (localRevealedPlayer && localAssignment) {
-    // If a player has revealed locally and the game isn't over yet globally
-    revealBox.textContent = `${localRevealedPlayer}, you are Secret Santa for ${localAssignment}! 🎁`;
   } else {
-    // Default state: no local reveal and game not over
+    // Default state: no local reveal for current user, and game not over globally
     revealBox.textContent = "";
+    // Ensure local storage is clear if no active reveal and game isn't over
+    localStorage.removeItem("secretSantaRevealedPlayer");
+    localStorage.removeItem("secretSantaAssignment");
   }
 }
 
@@ -80,30 +92,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const revealBox = document.getElementById("reveal");
   const buttons = document.querySelectorAll("button[data-player]");
-  const resetGameBtn = document.getElementById("reset-game-btn");
+  // Removed: const resetGameBtn = document.getElementById("reset-game-btn");
 
-  // 🔁 RESET BUTTON LOGIC
-  if (resetGameBtn) {
-    resetGameBtn.addEventListener("click", async () => {
-      if (
-        confirm(
-          "Are you sure you want to reset the Secret Santa game? This will clear all assignments and revealed states for everyone!"
-        )
-      ) {
-        try {
-          await set(assignmentsRef, null); // Clear assignments
-          await set(revealedPlayersRef, null); // Clear revealed states
-          localStorage.removeItem("secretSantaRevealedPlayer"); // Clear local state
-          localStorage.removeItem("secretSantaAssignment"); // Clear local state
-          alert("Game has been reset!");
-          console.log("Game data reset in Firebase.");
-        } catch (error) {
-          console.error("Error resetting game:", error);
-          alert("Failed to reset game: " + error.message);
-        }
-      }
-    });
-  }
+  // Removed: 🔁 RESET BUTTON LOGIC block
 
   // Attach click listeners to ALL buttons ONCE when the DOM is ready
   buttons.forEach((btn) => {
@@ -111,8 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", async () => {
       if (!currentAssignments) {
         console.warn("Assignments not yet loaded. Please wait a moment.");
-        // Optionally, you might want to show a loading spinner or
-        // temporary message in the UI to indicate data is still loading.
         return;
       }
 
@@ -148,8 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         console.error("Error updating revealed state:", error);
         // If Firebase update fails, revert local UI state for all buttons
-        // The renderButtonStates from the onValue listener will eventually
-        // correct the state, but this helps immediate feedback.
         alert("Failed to reveal. Please try again.");
         buttons.forEach((b) => {
           const pName = b.dataset.player;
@@ -199,9 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // with the confirmed state from Firebase.
     renderButtonStates(buttons, revealedStates, allPlayersRevealed);
 
-    // Use a dedicated function to render the revealBox content
-    // This function will intelligently use local storage for persistence
-    // and Firebase data for the "game over" state.
-    renderRevealBox(revealBox, allPlayersRevealed);
+    // Pass revealedStates to renderRevealBox
+    renderRevealBox(revealBox, revealedStates, allPlayersRevealed);
   }); // end revealedPlayers listener
 }); // end DOMContentLoaded
