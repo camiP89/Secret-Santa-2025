@@ -31,6 +31,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const revealBox = document.getElementById("reveal");
   const buttons = document.querySelectorAll("button[data-player]");
+  const resetGameBtn = document.getElementById("reset-game-btn");
+
+  // 🔁 RESET BUTTON LOGIC
+  if (resetGameBtn) {
+    resetGameBtn.addEventListener("click", async () => {
+      if (
+        confirm(
+          "Are you sure you want to reset the Secret Santa game? This will clear all assignments and revealed states for everyone!"
+        )
+      ) {
+        try {
+          await set(assignmentsRef, null);
+          await set(revealedPlayersRef, null);
+          alert("Game has been reset!");
+          console.log("Game data reset in Firebase.");
+        } catch (error) {
+          console.error("Error resetting game:", error);
+          alert("Failed to reset game: " + error.message);
+        }
+      }
+    });
+  }
 
   // -------------------------------------------
   // Listen for assignments in Firebase
